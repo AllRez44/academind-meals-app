@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MealScreen extends StatelessWidget {
   const MealScreen({super.key, required this.meal});
@@ -22,10 +21,10 @@ class MealScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
-          horizontal: 6,
           vertical: 10,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
               meal.imageUrl,
@@ -34,44 +33,49 @@ class MealScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 14),
-            Text(
-              'Ingredients',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text(
+                  'Ingredients',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
-            ),
-            const SizedBox(height: 14),
-            for (final ingredient in meal.ingredients)
-              Text(
-                ingredient,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                ),
+                const SizedBox(height: 14),
+                for (final ingredient in meal.ingredients)
+                  Text(
+                    ingredient,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-              ),
-            const SizedBox(height: 24),
-            Text(
-              'Steps',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  ),
+                const SizedBox(height: 24),
+                Text(
+                  'Steps',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
-            ),
-            const SizedBox(height: 14),
-            for (final step in meal.steps)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
                 ),
-                child: Text(
-                  step,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                const SizedBox(height: 14),
+                for (final step in meal.steps)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      step,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
-                ),
-              ),
+                    ),
+                  ),
+              ],),
+            )
           ],
         ),
       ),
