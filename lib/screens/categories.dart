@@ -6,17 +6,26 @@ import 'package:meals/screens/meals.dart';
 import 'package:meals/widgets/category_widget_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({
+    super.key,
+    required this.isMealFavorite,
+    required this.onToggleFavorite,
+  });
+
+  final bool Function(Meal meal) isMealFavorite;
+  final void Function(Meal meal) onToggleFavorite;
 
   void _selectedCategory(BuildContext context, Category category) {
-    List<Meal> categoryMeals = dummyMeals.where(
-            (meal) => meal.categories.contains(category.id)
-    ).toList();
+    List<Meal> categoryMeals = dummyMeals
+        .where((meal) => meal.categories.contains(category.id))
+        .toList();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MealsScreen(
           title: category.title,
           meals: categoryMeals,
+          isMealFavorite: isMealFavorite,
+          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
@@ -24,28 +33,23 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your category'),
+    return GridView(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
       ),
-      body: GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        padding: const EdgeInsets.all(16),
-        children: [
-          for (final category in defaultCategories)
-            CategoryGridItem(
-              category: category,
-              onSelectCategory: () {
-                _selectedCategory(context, category);
-              },
-            )
-        ],
-      ),
+      padding: const EdgeInsets.all(16),
+      children: [
+        for (final category in defaultCategories)
+          CategoryGridItem(
+            category: category,
+            onSelectCategory: () {
+              _selectedCategory(context, category);
+            },
+          )
+      ],
     );
   }
 }
